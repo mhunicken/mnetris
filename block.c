@@ -100,7 +100,7 @@ void block_rotate(block_t b){
     board_updateblock(b->board, b, -1);
     for(i = 0; r && i < newsy; i++){
         for(j = 0; r && j < newsx; j++){
-            if(b->posy + j >= 0 && newbm[i][j]){
+            if(b->posy + i >= 0 && newbm[i][j]){
                 r = b->board->cells[b->posy + i][b->posx + j] < 0;
             }
         }
