@@ -12,19 +12,19 @@ void output_initialize(int sizey, int sizex){
     initscr();
     keypad(stdscr, true);
     cbreak();
-    echo();
+    noecho();
     timeout(50);
     refresh();
 
     if(has_colors()){
         start_color();
-        init_pair(1, COLOR_WHITE, COLOR_RED);
-        init_pair(2, COLOR_WHITE, COLOR_GREEN);
+        init_pair(1, COLOR_WHITE, COLOR_WHITE);
+        init_pair(2, COLOR_WHITE, COLOR_RED);
         init_pair(3, COLOR_WHITE, COLOR_YELLOW);
-        init_pair(4, COLOR_WHITE, COLOR_BLUE);
-        init_pair(5, COLOR_WHITE, COLOR_CYAN);
+        init_pair(4, COLOR_WHITE, COLOR_CYAN);
+        init_pair(5, COLOR_WHITE, COLOR_GREEN);
         init_pair(6, COLOR_WHITE, COLOR_MAGENTA);
-        init_pair(7, COLOR_WHITE, COLOR_WHITE);
+        init_pair(7, COLOR_WHITE, COLOR_BLUE);
     }
 
     WINDOW *borderw = newwin(sizey + 2, 2*sizex + 2, 2, 2);
