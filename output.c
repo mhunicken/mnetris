@@ -2,11 +2,12 @@
 
 #include <ncurses.h>
 
+#include "block.h"
 #include "board.h"
 
 #define CHAR_BLOCK ((char)219)
 
-WINDOW *boardw;
+WINDOW *boardw, *nextblockw;
 
 void output_initialize(int sizey, int sizex){
     initscr();
@@ -36,6 +37,15 @@ void output_initialize(int sizey, int sizex){
     assert(boardw != NULL);
 
     assert(!wrefresh(boardw));
+
+    nextblockw = newwin(MAXBLOCKSIZE, 2 * MAXBLOCKSIZE, 4, 2*sizex + 8);
+    assert(!wrefresh(nextblockw));
+
+    int ctrl_basey = 4 + MAXBLOCKSIZE + 6, ctrl_basex = 2 * sizex + 8;
+    mvprintw(ctrl_basey, ctrl_basex,     "up:         rotate");
+    mvprintw(ctrl_basey + 2, ctrl_basex, "down:       drop");
+    mvprintw(ctrl_basey + 4, ctrl_basex, "left/right: move");
+
     refresh();
 }
 
@@ -51,7 +61,23 @@ void output_refreshboard(board_t p){
     move(0, 0);
 }
 
+void output_drawnextblock(block_t b){
+    int i,j;
+    werase(nextblockw);
+    wattrset(nextblockw, COLOR_PAIR(b->type + 1));
+    for(i = 0; i < b->sizey; ++i){
+        for(j = 0; j < b->sizex; ++j){
+            if(b->bitmap[i][j]){
+                mvwprintw(nextblockw, i, 2 * j, "  ");
+            }
+        }
+    }
+    wrefresh(nextblockw);
+    move(0, 0);
+}
+
 void output_finalize(){
     delwin(boardw);
+    delwin(nextblockw);
     endwin();
 }

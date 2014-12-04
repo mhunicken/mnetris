@@ -20,11 +20,12 @@ int main(int argc, char *argv[]){
     output_initialize(DEFAULTBOARDH, DEFAULTBOARDW);
 
     board_t board = board_new(DEFAULTBOARDH, DEFAULTBOARDW);
-    output_refreshboard(board);
 
-    block_t current_block = block_new(-1);
+    block_t current_block = block_new(-1), next_block = block_new(-1);
     block_setboard(current_block, board);
     block_initpos(current_block);
+    output_refreshboard(board);
+    output_drawnextblock(next_block);
 
     bool playing = true;
     int c, score = 0, speed = DEFAULTSPEED;
@@ -64,9 +65,12 @@ int main(int argc, char *argv[]){
                     score += board_checkfulllines(board);
                 }
                 block_destroy(current_block);
-                current_block = block_new(-1);
+                current_block = next_block;
                 block_setboard(current_block, board);
                 block_initpos(current_block);
+
+                next_block = block_new(-1);
+                output_drawnextblock(next_block);
             }
         }
         if(change){
